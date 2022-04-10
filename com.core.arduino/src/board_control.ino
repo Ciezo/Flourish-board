@@ -98,7 +98,6 @@ void alarm(int check, String type) {
 
     // Condition when there is a fire and flameVal < 1000
     if ((check == 2) && (type == "FIRE")) {
-        tone(buzz_pin, 500, 400);
         tone(buzz_pin, 1000, 800);
         delay(200);
         tone(buzz_pin, 600, 800);
@@ -149,7 +148,7 @@ void loop() {
                 break;
         }
             
-            delay(1);  // delay between reads from the flame module sensor
+            // delay(1);  // delay between reads from the flame module sensor
 /////////////////////////////////////////////////////////////////////////////
 
 
@@ -187,7 +186,7 @@ void loop() {
 
     else {
          // Wait for 1 second
-        delay(1000); 
+        // delay(1000); 
         // Turn it off
         digitalWrite(ledPin_state_GRE, LOW);  
     }
@@ -200,7 +199,7 @@ void loop() {
 
     else {
         // Wait for a second 
-        delay(1000);
+        // delay(1000);
         // Turn off 
         digitalWrite(ledPin_state_YLW, LOW); 
     }
@@ -215,7 +214,7 @@ void loop() {
 
     else {
         // Wait for a second 
-        delay(1000);
+        // delay(1000);
         // Turn off 
         digitalWrite(ledPin_state_RED, LOW); 
     }
