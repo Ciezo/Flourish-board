@@ -20,7 +20,7 @@ const int ledPin_state_GRE =  11;
 const int flame_sens_pin = A0; 
 
 // Serial 
-SoftwareSerial rx_tx(2,3); 
+SoftwareSerial tx_rx(2, 3); // TX | RX 
 // int rxd_pin = 3; 
 // int txd_pin = 2; 
 
@@ -94,6 +94,12 @@ void alarm(int check, String type) {
 
         // Print message to Serial COM monitor 
         Serial.println("GARBAGE FULL!!!");
+
+        // Check condition to see if Bluetooth communication is available
+        if (tx_rx.available() > 0) {
+            // Print and send over Bluetooth Serial communication 
+            tx_rx.println("Garbage is FULL"); 
+        }
     }
 
     // Condition when there is a fire and flameVal < 1000
@@ -105,6 +111,12 @@ void alarm(int check, String type) {
 
         // Print message to Serial COM monitor 
         Serial.println("FIRE DETECTED!!!");
+
+        // Check condition to see if Bluetooth communication is available
+        if (tx_rx.available() > 0) {
+            // Print and send over to the Bluetooth Serial communication 
+            tx_rx.println("Fire source is detected!!!"); 
+        }
     }
 }
 
@@ -112,6 +124,16 @@ void alarm(int check, String type) {
 void setup() {
     // Begin and initialize Serial communication
     Serial.begin(9600);
+    // Prompt over Serial communication
+    Serial.println("Serial communication with baud rate of default 9600"); 
+    Serial.println("Bluetooth connection is ready to establish"); 
+
+    // Begin Bluetooth Serial Communication 
+    tx_rx.begin(9600);
+    // Prompts over Bluetooth Serial
+    tx_rx.println("Connection initiated!");
+    tx_rx.println("Bluetooth communication and pairing with the device is successul");
+    tx_rx.println("***ENTER 1 to wake up Bluetooth connection***");
 
     // Call function to set up pins 
     setPins_mode();
@@ -145,6 +167,8 @@ void loop() {
                 break;
             case 2:    // No fire detected.
                 Serial.println("No Fire");
+                if (tx_rx.available() > 0) 
+                    tx_rx.println("No Fire"); 
                 break;
         }
             
@@ -220,6 +244,20 @@ void loop() {
     }
 /////////////////////////////////////////////////////////////////////////////
 
+
+
+    //==BLUETOOTH, HC-05==// 
+/////////////////////////////////////////////////////////////////////////////
+    // Bluetooth series communication 
+    // Start looking for streaming of Bluetooth connection. 
+    // Find if it available.  
+    if (tx_rx.available() > 0) {
+        // Print live distance and measuring coming from the Ultrasonic Sensor 
+        // NOTE: We will be printing the CALCULATED distance 
+        tx_rx.print("Fill level content: "); 
+        tx_rx.print(distance); 
+        tx_rx.println(" cm"); 
+    }    
 
 
     // Activate Serial Monitoring and print output to COM
